@@ -55,7 +55,7 @@ export function ChatPanel() {
         ...prev,
         { role: "assistant", content: data.assistant },
       ]);
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (_err) {
       setMessages((prev) => [
         ...prev,

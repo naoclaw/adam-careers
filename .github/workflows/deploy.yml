@@ -1,0 +1,42 @@
+name: Deploy to DigiCloud VPS
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          script: |
+            set -e
+            cd /opt/adam-careers
+
+            # Pull latest code
+            git pull origin main
+
+            # Write production env from secrets
+            cat > .env.production << EOF
+            NEXT_PUBLIC_SUPABASE_URL=${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+            NEXT_PUBLIC_SUPABASE_ANON_KEY=${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+            NEXT_PUBLIC_APP_URL=https://adamcareers.com
+            OPENROUTER_API_KEY=${{ secrets.OPENROUTER_API_KEY }}
+            OPENROUTER_MODEL=x-ai/grok-3-mini
+            COMPOSIO_API_KEY=${{ secrets.COMPOSIO_API_KEY }}
+            EOF
+
+            # Build & restart
+            docker compose build --no-cache
+            docker compose up -d --remove-orphans
+            docker image prune -f
+
+            echo "✅ Deployed successfully"

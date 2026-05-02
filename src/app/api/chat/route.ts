@@ -56,7 +56,7 @@ export async function POST(req: Request) {
       "Sorry, I could not generate a response.";
 
     return NextResponse.json({ assistant });
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (_error) {
     return NextResponse.json(
       { error: "Unexpected error while generating chat response" },
