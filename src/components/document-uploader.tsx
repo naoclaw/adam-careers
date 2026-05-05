@@ -1,16 +1,25 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { useDropzone } from "react-dropzone";
 import { createClient } from "@/lib/supabase/client";
 
+const MAX_BYTES = 10 * 1024 * 1024;
+
 export function DocumentUploader() {
+  const router = useRouter();
   const [status, setStatus] = useState<string>("");
   const [loading, setLoading] = useState(false);
 
   const onDrop = async (acceptedFiles: File[]) => {
     const file = acceptedFiles[0];
     if (!file) return;
+
+    if (file.size > MAX_BYTES) {
+      setStatus(`File too large (max ${MAX_BYTES / 1024 / 1024} MB)`);
+      return;
+    }
 
     setLoading(true);
     setStatus("Uploading...");
@@ -54,7 +63,8 @@ export function DocumentUploader() {
 
       if (dbError) throw dbError;
 
-      setStatus("Uploaded successfully. Refresh page to see latest files.");
+      setStatus("Uploaded successfully.");
+      router.refresh();
     } catch (error) {
       setStatus(error instanceof Error ? error.message : "Upload failed");
     } finally {

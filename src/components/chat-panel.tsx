@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useMemo, useState } from "react";
+import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
 
 type ChatMessage = {
   role: "user" | "assistant";
@@ -17,11 +17,19 @@ export function ChatPanel() {
   ]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   const canSubmit = useMemo(
     () => input.trim().length > 0 && !loading,
     [input, loading],
   );
+
+  useEffect(() => {
+    scrollRef.current?.scrollTo({
+      top: scrollRef.current.scrollHeight,
+      behavior: "smooth",
+    });
+  }, [messages, loading]);
 
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
@@ -55,8 +63,7 @@ export function ChatPanel() {
         ...prev,
         { role: "assistant", content: data.assistant },
       ]);
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (_err) {
+    } catch {
       setMessages((prev) => [
         ...prev,
         {
@@ -72,11 +79,14 @@ export function ChatPanel() {
 
   return (
     <div className="rounded-2xl border border-gray-200 bg-white p-4">
-      <div className="chat-scroll mb-4 h-[60vh] space-y-3 overflow-y-auto rounded-xl border border-gray-100 bg-gray-50 p-4">
+      <div
+        ref={scrollRef}
+        className="chat-scroll mb-4 h-[60vh] space-y-3 overflow-y-auto rounded-xl border border-gray-100 bg-gray-50 p-4"
+      >
         {messages.map((m, i) => (
           <div
             key={`${m.role}-${i}`}
-            className={`max-w-[85%] rounded-xl px-4 py-3 text-sm ${
+            className={`max-w-[85%] rounded-xl px-4 py-3 text-sm whitespace-pre-wrap ${
               m.role === "user"
                 ? "ml-auto bg-blue-600 text-white"
                 : "bg-white text-gray-800 border border-gray-200"

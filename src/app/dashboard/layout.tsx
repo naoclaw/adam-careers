@@ -1,15 +1,7 @@
-import Link from "next/link";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { DashboardSignOut } from "@/components/dashboard-signout";
-
-const nav = [
-  { href: "/dashboard", label: "Overview" },
-  { href: "/dashboard/chat", label: "AI Chat" },
-  { href: "/dashboard/documents", label: "My Files" },
-  { href: "/dashboard/linkedin", label: "LinkedIn" },
-  { href: "/dashboard/templates", label: "Templates" },
-];
+import { DashboardNav } from "@/components/dashboard-nav";
 
 export default async function DashboardLayout({
   children,
@@ -31,17 +23,7 @@ export default async function DashboardLayout({
             <p className="text-xl font-bold text-gray-900">Adam Careers</p>
             <p className="text-xs text-gray-500">AI Job Helper</p>
           </div>
-          <nav className="space-y-2">
-            {nav.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="block rounded-lg px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
-              >
-                {item.label}
-              </Link>
-            ))}
-          </nav>
+          <DashboardNav />
           <div className="mt-6 border-t border-gray-100 pt-4">
             <p className="mb-3 text-xs text-gray-500">Signed in as</p>
             <p className="mb-3 truncate text-sm font-medium text-gray-700">

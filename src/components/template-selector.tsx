@@ -96,10 +96,6 @@ export function TemplateSelector({
         </button>
         {status && <p className="text-sm text-gray-600">{status}</p>}
       </div>
-      <p className="text-sm text-gray-500">
-        PDF export hook is prepared; next step is adding generation with
-        `react-pdf` or server-side rendering.
-      </p>
     </div>
   );
 }
