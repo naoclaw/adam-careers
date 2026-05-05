@@ -3,6 +3,12 @@ name: Deploy to DigiCloud VPS
 on:
   push:
     branches: [main]
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: "Branch to deploy"
+        required: true
+        default: main
 
 jobs:
   deploy:
@@ -13,18 +19,24 @@ jobs:
 
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v1.0.3
+        env:
+          DEPLOY_BRANCH: ${{ github.event.inputs.branch || github.ref_name }}
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_SSH_KEY }}
+          envs: DEPLOY_BRANCH
           script: |
             set -e
             cd /opt/adam-careers
 
-            # Pull latest code
-            git pull origin main
+            # Pull the requested branch
+            git fetch origin "$DEPLOY_BRANCH"
+            git checkout "$DEPLOY_BRANCH"
+            git reset --hard "origin/$DEPLOY_BRANCH"
 
             # Write production env from secrets
+            umask 077
             cat > .env.production << EOF
             NEXT_PUBLIC_SUPABASE_URL=${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
             NEXT_PUBLIC_SUPABASE_ANON_KEY=${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
@@ -33,10 +45,11 @@ jobs:
             OPENROUTER_MODEL=x-ai/grok-3-mini
             COMPOSIO_API_KEY=${{ secrets.COMPOSIO_API_KEY }}
             EOF
+            chmod 600 .env.production
 
-            # Build & restart
-            docker compose build --no-cache
+            # Build & restart (let Docker reuse cache when possible)
+            docker compose build
             docker compose up -d --remove-orphans
             docker image prune -f
 
-            echo "✅ Deployed successfully"
+            echo "Deployed $DEPLOY_BRANCH"
