@@ -1,8 +1,21 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 
-// Calls Composio's LinkedIn MCP to fetch the authenticated user's LinkedIn profile
-// and saves it to the profiles table in Supabase.
+type LinkedInProfile = {
+  id?: string;
+  sub?: string;
+  name?: string;
+  localizedFirstName?: string;
+  localizedLastName?: string;
+  headline?: string;
+  localizedHeadline?: string;
+  profileUrl?: string;
+  vanityName?: string;
+  summary?: string;
+  email?: string;
+  location?: { name?: string } | string;
+};
+
 export async function POST() {
   const supabase = await createClient();
 
@@ -15,57 +28,85 @@ export async function POST() {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
+  if (!process.env.COMPOSIO_API_KEY) {
+    return NextResponse.json(
+      { error: "LinkedIn import is not configured" },
+      { status: 503 },
+    );
+  }
+
+  let li: LinkedInProfile;
   try {
-    // Call Composio LinkedIn MCP endpoint to get current user's profile
     const composioRes = await fetch(
-      "https://connect.composio.dev/mcp/execute",
+      "https://backend.composio.dev/api/v3/tools/execute",
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${process.env.COMPOSIO_API_KEY ?? ""}`,
+          "x-api-key": process.env.COMPOSIO_API_KEY,
         },
         body: JSON.stringify({
-          toolkit: "linkedin",
-          tool: "LINKEDIN_GET_MY_INFO",
+          tool_slug: "LINKEDIN_GET_MY_INFO",
+          user_id: user.id,
           arguments: {},
         }),
-      }
+      },
     );
 
     if (!composioRes.ok) {
-      throw new Error(`Composio responded with ${composioRes.status}`);
+      const text = await composioRes.text();
+      console.error("Composio error", composioRes.status, text);
+      return NextResponse.json(
+        { error: "LinkedIn provider failed. Make sure your LinkedIn account is connected." },
+        { status: 502 },
+      );
     }
 
     const composioData = await composioRes.json();
-    const li = composioData?.data ?? composioData;
-
-    // Map LinkedIn fields to our profiles schema
-    const update: Record<string, string | null> = {
-      full_name: li.localizedFirstName
-        ? `${li.localizedFirstName} ${li.localizedLastName ?? ""}`.trim()
-        : li.name ?? null,
-      headline: li.headline ?? li.localizedHeadline ?? null,
-      linkedin_url: li.profileUrl ?? li.vanityName
-        ? `https://linkedin.com/in/${li.vanityName}`
-        : null,
-      linkedin_id: li.id ?? li.sub ?? null,
-      summary: li.summary ?? null,
-      location: li.location?.name ?? null,
-      linkedin_raw: JSON.stringify(li),
-      updated_at: new Date().toISOString(),
-    };
-
-    const { error: upsertError } = await supabase
-      .from("profiles")
-      .update(update)
-      .eq("id", user.id);
-
-    if (upsertError) throw upsertError;
-
-    return NextResponse.json({ success: true, profile: update });
+    li = (composioData?.data ?? composioData) as LinkedInProfile;
   } catch (err) {
-    const message = err instanceof Error ? err.message : "Unknown error";
-    return NextResponse.json({ error: message }, { status: 500 });
+    console.error("Composio fetch failed", err);
+    return NextResponse.json(
+      { error: "Could not reach LinkedIn provider" },
+      { status: 502 },
+    );
   }
+
+  const fullName = li.localizedFirstName
+    ? `${li.localizedFirstName} ${li.localizedLastName ?? ""}`.trim()
+    : (li.name ?? null);
+
+  const linkedinUrl =
+    li.profileUrl ??
+    (li.vanityName ? `https://linkedin.com/in/${li.vanityName}` : null);
+
+  const locationName =
+    typeof li.location === "string" ? li.location : (li.location?.name ?? null);
+
+  const profile = {
+    id: user.id,
+    full_name: fullName,
+    email: li.email ?? user.email ?? null,
+    headline: li.headline ?? li.localizedHeadline ?? null,
+    linkedin_url: linkedinUrl,
+    linkedin_id: li.id ?? li.sub ?? null,
+    summary: li.summary ?? null,
+    location: locationName,
+    linkedin_raw: li,
+    updated_at: new Date().toISOString(),
+  };
+
+  const { error: upsertError } = await supabase
+    .from("profiles")
+    .upsert(profile, { onConflict: "id" });
+
+  if (upsertError) {
+    console.error("Profile upsert failed", upsertError);
+    return NextResponse.json(
+      { error: "Could not save profile" },
+      { status: 500 },
+    );
+  }
+
+  return NextResponse.json({ success: true, profile });
 }
