@@ -1,0 +1,17 @@
+node_modules
+.next
+.git
+.github
+.vscode
+.idea
+.env
+.env.*
+!.env.example
+*.md
+!README.md
+Dockerfile
+docker-compose*.yml
+nginx
+supabase
+npm-debug.log*
+.DS_Store
