@@ -20,6 +20,8 @@ jobs:
 
       - run: npm run lint
 
+      - run: npm test
+
       - name: next build
         run: npm run build
         env:

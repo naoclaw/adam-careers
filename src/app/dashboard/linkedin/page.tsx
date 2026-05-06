@@ -1,6 +1,8 @@
 import { createClient } from "@/lib/supabase/server";
 import { LinkedInImport } from "@/components/linkedin-import";
 
+export const metadata = { title: "LinkedIn Import — Adam Careers" };
+
 type Profile = {
   full_name: string | null;
   email: string | null;
@@ -34,10 +36,10 @@ export default async function DashboardLinkedInPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">LinkedIn Import</h1>
-        <p className="text-sm text-gray-600 mt-1">
-          Import your LinkedIn profile to auto-fill your CV and personalise your
-          AI career coach.
+        <h1 className="text-2xl font-bold text-gray-900">LinkedIn import</h1>
+        <p className="mt-1 text-sm text-gray-600">
+          Pull your headline, summary, and experience from LinkedIn so your
+          tailored CVs start strong.
         </p>
       </div>
 

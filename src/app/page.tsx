@@ -9,87 +9,82 @@ import {
   ChatBubbleLeftRightIcon,
   CloudArrowUpIcon,
 } from "@heroicons/react/24/outline";
+import { Logo } from "@/components/logo";
 
 const features = [
   {
-    icon: ChatBubbleLeftRightIcon,
-    title: "AI Career Coach",
+    icon: SparklesIcon,
+    title: "Paste any job URL",
     description:
-      "Chat with your personal AI powered by Grok — get tailored advice, interview prep, and job search strategy 24/7.",
+      "Drop in a link to a posting on LinkedIn, Indeed, or any career page. We pull out the role, requirements, and skills automatically.",
   },
   {
     icon: DocumentTextIcon,
-    title: "Smart CV Builder",
+    title: "Tailored in seconds",
     description:
-      "Import from LinkedIn or upload your PDF/Word file. Our AI analyzes and enhances it instantly.",
-  },
-  {
-    icon: SparklesIcon,
-    title: "4 Professional Templates",
-    description:
-      "Choose from Modern, Classic, Creative, or Minimal designs. Export a polished CV and cover letter in seconds.",
-  },
-  {
-    icon: UserCircleIcon,
-    title: "LinkedIn Integration",
-    description:
-      "Link your LinkedIn account to import your profile and leverage your professional network for job opportunities.",
-  },
-  {
-    icon: CloudArrowUpIcon,
-    title: "Your Documents, Secure",
-    description:
-      "All your CVs, cover letters, and files are stored securely — accessible anywhere, always yours.",
+      "Our AI rewrites your summary and bullets to match the job — using only what's actually in your profile, never inventing.",
   },
   {
     icon: BriefcaseIcon,
-    title: "Job Match Intelligence",
+    title: "ATS-readable HTML",
     description:
-      "Get AI-scored job matches based on your profile. Know exactly where you stand before you apply.",
+      "Real semantic HTML that applicant-tracking systems can parse — not pixel-baked PDFs that lose their structure.",
+  },
+  {
+    icon: ChatBubbleLeftRightIcon,
+    title: "Cover letter included",
+    description:
+      "Each generation comes with a 250-350 word cover letter, specific to the company and the role. Copy and ship.",
+  },
+  {
+    icon: UserCircleIcon,
+    title: "Match score + skill gap",
+    description:
+      "See how well you match each job and exactly which skills the posting asks for that aren't yet on your profile.",
+  },
+  {
+    icon: CloudArrowUpIcon,
+    title: "Your data, your control",
+    description:
+      "Your profile and CVs are private to your account. Cancel any time — your data is exportable and deletable.",
   },
 ];
 
 const steps = [
   {
     step: "01",
-    title: "Create your account",
-    desc: "Sign up in 30 seconds with your email or LinkedIn.",
+    title: "Build your profile",
+    desc: "Sign up free, then add your experience and skills — or import from LinkedIn.",
   },
   {
     step: "02",
-    title: "Import your profile",
-    desc: "Upload your CV or connect LinkedIn — AI parses everything.",
+    title: "Paste a job URL",
+    desc: "We extract the role, the company, and the exact skills they ask for.",
   },
   {
     step: "03",
-    title: "Build & customize",
-    desc: "Choose a template, let AI enhance your content, export your perfect CV.",
+    title: "Get a tailored CV",
+    desc: "Pick a template and AI rewrites your CV plus a cover letter for that specific job.",
   },
   {
     step: "04",
-    title: "Chat & apply",
-    desc: "Ask your AI coach anything. Get interview-ready. Land the job.",
+    title: "Download and apply",
+    desc: "Open in browser, print to PDF, or download the ATS-ready HTML. Ship it.",
   },
 ];
 
-const testimonials = [
+const reasons = [
   {
-    name: "Sarah M.",
-    role: "Software Engineer",
-    avatar: "SM",
-    text: "I updated my CV with Adam Careers and got 3 interviews in one week. The AI suggestions were spot on.",
+    title: "It's truthful",
+    desc: "We rewrite what's in your profile — we don't invent jobs, dates, or metrics. ATS-readable, recruiter-credible.",
   },
   {
-    name: "James K.",
-    role: "Marketing Manager",
-    avatar: "JK",
-    text: "The cover letter templates saved me hours. Clean, professional, and the AI tailored each one to the job.",
+    title: "It's specific",
+    desc: "Every CV is rebuilt around the job you paste. Different posting, different tailored summary and bullets.",
   },
   {
-    name: "Amira L.",
-    role: "Product Designer",
-    avatar: "AL",
-    text: "The LinkedIn import feature is magic. My entire work history was parsed in seconds. Incredible tool.",
+    title: "It saves hours",
+    desc: "What used to be 90 minutes of editing per application becomes 30 seconds. So you can apply to more, better.",
   },
 ];
 
@@ -99,14 +94,7 @@ export default function HomePage() {
       {/* Navbar */}
       <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center">
-              <BriefcaseIcon className="w-5 h-5 text-white" />
-            </div>
-            <span className="font-bold text-xl text-gray-900">
-              Adam Careers
-            </span>
-          </div>
+          <Logo size="md" href="/" />
           <div className="hidden md:flex items-center gap-8 text-sm text-gray-600">
             <a
               href="#features"
@@ -120,12 +108,12 @@ export default function HomePage() {
             >
               How it works
             </a>
-            <a
-              href="#testimonials"
+            <Link
+              href="/pricing"
               className="hover:text-blue-600 transition-colors"
             >
-              Stories
-            </a>
+              Pricing
+            </Link>
           </div>
           <div className="flex items-center gap-3">
             <Link
@@ -156,14 +144,14 @@ export default function HomePage() {
             <span>Powered by Grok AI</span>
           </div>
           <h1 className="text-5xl md:text-7xl font-extrabold text-white mb-6 leading-tight">
-            Land your dream job
+            Paste a job URL.
             <br />
-            <span className="gradient-text">10x faster</span>
+            <span className="gradient-text">Get a tailored CV.</span>
           </h1>
           <p className="text-xl text-blue-100 mb-10 max-w-2xl mx-auto leading-relaxed">
-            Your AI-powered career companion. Build a stunning CV, write
-            compelling cover letters, and get personalized coaching — all in one
-            place.
+            Drop in a link to any job posting. We extract the requirements and
+            rewrite your CV and cover letter to match — in under a minute, in
+            ATS-ready HTML.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
@@ -256,46 +244,27 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Testimonials */}
-      <section id="testimonials" className="py-24 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* Why it's different */}
+      <section id="why" className="py-24 bg-gray-50">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-extrabold text-gray-900 mb-4">
-              Real people. Real results.
+              Why people pick Adam
             </h2>
             <p className="text-xl text-gray-500">
-              Join thousands who found their next opportunity with Adam Careers.
+              We built this for one thing: getting you to the interview, faster.
             </p>
           </div>
-          <div className="grid md:grid-cols-3 gap-8">
-            {testimonials.map((t) => (
+          <div className="grid md:grid-cols-3 gap-6">
+            {reasons.map((r) => (
               <div
-                key={t.name}
-                className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100"
+                key={r.title}
+                className="rounded-2xl bg-white border border-gray-100 p-8"
               >
-                <div className="flex items-center gap-3 mb-5">
-                  <div className="w-11 h-11 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-sm">
-                    {t.avatar}
-                  </div>
-                  <div>
-                    <p className="font-bold text-gray-900">{t.name}</p>
-                    <p className="text-sm text-gray-400">{t.role}</p>
-                  </div>
-                </div>
-                <p className="text-gray-600 leading-relaxed italic">
-                  &ldquo;{t.text}&rdquo;
-                </p>
-                <div className="flex gap-0.5 mt-4">
-                  {[1, 2, 3, 4, 5].map((s) => (
-                    <svg
-                      key={s}
-                      className="w-4 h-4 text-yellow-400 fill-current"
-                      viewBox="0 0 20 20"
-                    >
-                      <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z" />
-                    </svg>
-                  ))}
-                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">
+                  {r.title}
+                </h3>
+                <p className="text-gray-600 leading-relaxed">{r.desc}</p>
               </div>
             ))}
           </div>
@@ -329,21 +298,22 @@ export default function HomePage() {
       <footer className="bg-gray-900 text-gray-400 py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <div className="flex items-center gap-2">
-              <div className="w-7 h-7 rounded-lg bg-blue-600 flex items-center justify-center">
-                <BriefcaseIcon className="w-4 h-4 text-white" />
-              </div>
-              <span className="font-bold text-white">Adam Careers</span>
-            </div>
+            <Logo variant="light" size="sm" href="/" />
             <p className="text-sm">© 2026 Adam Careers. All rights reserved.</p>
             <div className="flex gap-6 text-sm">
-              <a href="#" className="hover:text-white transition-colors">
+              <Link href="/pricing" className="hover:text-white transition-colors">
+                Pricing
+              </Link>
+              <Link href="/legal/privacy" className="hover:text-white transition-colors">
                 Privacy
-              </a>
-              <a href="#" className="hover:text-white transition-colors">
+              </Link>
+              <Link href="/legal/terms" className="hover:text-white transition-colors">
                 Terms
-              </a>
-              <a href="#" className="hover:text-white transition-colors">
+              </Link>
+              <a
+                href="mailto:hello@adamcareers.com"
+                className="hover:text-white transition-colors"
+              >
                 Contact
               </a>
             </div>
