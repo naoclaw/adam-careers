@@ -38,17 +38,22 @@ export async function POST() {
   let li: LinkedInProfile;
   try {
     const composioRes = await fetch(
-      "https://backend.composio.dev/api/v3/tools/execute",
+      "https://connect.composio.dev/mcp",
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "x-api-key": process.env.COMPOSIO_API_KEY,
+          "x-consumer-api-key": process.env.COMPOSIO_API_KEY,
+          "Accept": "application/json, text/event-stream",
         },
         body: JSON.stringify({
-          tool_slug: "LINKEDIN_GET_MY_INFO",
-          user_id: user.id,
-          arguments: {},
+          jsonrpc: "2.0",
+          id: 1,
+          method: "tools/call",
+          params: {
+            name: "LINKEDIN_GET_MY_INFO",
+            arguments: {},
+          },
         }),
       },
     );
@@ -63,7 +68,18 @@ export async function POST() {
     }
 
     const composioData = await composioRes.json();
-    li = (composioData?.data ?? composioData) as LinkedInProfile;
+    // MCP format: result.content[0].text contains JSON data
+    const resultText = composioData?.result?.content?.[0]?.text;
+    if (resultText) {
+      try {
+        const parsed = JSON.parse(resultText);
+        li = parsed as LinkedInProfile;
+      } catch {
+        li = (composioData?.data ?? composioData) as LinkedInProfile;
+      }
+    } else {
+      li = (composioData?.data ?? composioData) as LinkedInProfile;
+    }
   } catch (err) {
     console.error("Composio fetch failed", err);
     return NextResponse.json(
