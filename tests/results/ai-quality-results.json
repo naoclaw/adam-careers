@@ -1,0 +1,26 @@
+{
+  "timestamp": "2026-05-15T11:46:41.030Z",
+  "baseUrl": "http://localhost:3000",
+  "results": [
+    {
+      "name": "cv-generation",
+      "passed": false,
+      "details": "API error: Unauthorized",
+      "timestamp": "2026-05-15T11:46:40.948Z"
+    },
+    {
+      "name": "chat-quality",
+      "passed": false,
+      "score": 0,
+      "details": "Average relevance score: 0.0/100 (3 prompts tested)",
+      "timestamp": "2026-05-15T11:46:41.018Z"
+    },
+    {
+      "name": "job-extraction",
+      "passed": false,
+      "score": 0,
+      "details": "0/3 URLs parsed successfully (avg score: 0.0%)",
+      "timestamp": "2026-05-15T11:46:41.029Z"
+    }
+  ]
+}

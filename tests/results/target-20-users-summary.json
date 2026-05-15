@@ -1,0 +1,38 @@
+{
+  "scenario": "target-20-users",
+  "timestamp": "2026-05-15T11:45:56.420Z",
+  "config": {
+    "connections": 20,
+    "duration": 600,
+    "targetRequests": 12000
+  },
+  "metrics": {
+    "requests": {
+      "total": 12000,
+      "mean": 218.19,
+      "stddev": 30.97,
+      "min": 138,
+      "max": 264
+    },
+    "latency": {
+      "mean": 90.37,
+      "stddev": 25.75,
+      "min": 5,
+      "max": 321,
+      "p50": 85,
+      "p75": 101,
+      "p90": 118,
+      "p99": 185
+    },
+    "throughput": {
+      "mean": 2061069.97,
+      "stddev": 337711.09,
+      "min": 1141403,
+      "max": 2824819
+    },
+    "errors": 0,
+    "timeouts": 0,
+    "resets": 0,
+    "non2": 10000
+  }
+}

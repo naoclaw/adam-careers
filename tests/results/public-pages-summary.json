@@ -1,0 +1,38 @@
+{
+  "scenario": "public-pages",
+  "timestamp": "2026-05-15T11:44:47.063Z",
+  "config": {
+    "connections": 50,
+    "duration": 60,
+    "targetRequests": 3000
+  },
+  "metrics": {
+    "requests": {
+      "total": 3000,
+      "mean": 111.12,
+      "stddev": 47.27,
+      "min": 31,
+      "max": 186
+    },
+    "latency": {
+      "mean": 433.53,
+      "stddev": 301.73,
+      "min": 10,
+      "max": 1849,
+      "p50": 312,
+      "p75": 376,
+      "p90": 960,
+      "p99": 1480
+    },
+    "throughput": {
+      "mean": 3017598.23,
+      "stddev": 1060406.38,
+      "min": 41038,
+      "max": 5042834
+    },
+    "errors": 0,
+    "timeouts": 0,
+    "resets": 0,
+    "non2": 0
+  }
+}

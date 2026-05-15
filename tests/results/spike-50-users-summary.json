@@ -1,0 +1,38 @@
+{
+  "scenario": "spike-50-users",
+  "timestamp": "2026-05-15T11:48:13.027Z",
+  "config": {
+    "connections": 50,
+    "duration": 120,
+    "targetRequests": 10000
+  },
+  "metrics": {
+    "requests": {
+      "total": 10000,
+      "mean": 117.65,
+      "stddev": 41.53,
+      "min": 23,
+      "max": 194
+    },
+    "latency": {
+      "mean": 422.1,
+      "stddev": 297.37,
+      "min": 4,
+      "max": 1898,
+      "p50": 295,
+      "p75": 373,
+      "p90": 982,
+      "p99": 1225
+    },
+    "throughput": {
+      "mean": 3142858.57,
+      "stddev": 1281090.98,
+      "min": 4163,
+      "max": 6458784
+    },
+    "errors": 0,
+    "timeouts": 0,
+    "resets": 0,
+    "non2": 2000
+  }
+}
