@@ -5,9 +5,9 @@
  * Tests 20 concurrent users across all critical endpoints
  */
 
-import autocannon from 'autocannon';
-import fs from 'fs';
-import path from 'path';
+const autocannon = require('autocannon');
+const fs = require('fs');
+const path = require('path');
 
 const RESULTS_DIR = path.join(__dirname, 'results');
 const BASE_URL = process.env.TEST_URL || 'http://localhost:3000';
