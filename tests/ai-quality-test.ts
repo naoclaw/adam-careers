@@ -137,7 +137,7 @@ class AIQualityTester {
     ];
 
     let successes = 0;
-    const results: any[] = [];
+    const results: unknown[] = [];
 
     for (const url of testUrls) {
       try {
@@ -176,7 +176,7 @@ class AIQualityTester {
     };
   }
 
-  private evaluateCVQuality(cvText: string): any {
+  private evaluateCVQuality(cvText: string): unknown {
     let atsScore = 0;
     let keywordScore = 0;
     let formatScore = 0;
@@ -272,7 +272,8 @@ class AIQualityTester {
       results: this.results
     };
 
-    require('fs').writeFileSync(filePath, JSON.stringify(data, null, 2));
+    import fs from 'fs';
+fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
     console.log(`\nResults saved to: ${filePath}`);
   }
 }

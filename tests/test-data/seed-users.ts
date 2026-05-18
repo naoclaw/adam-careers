@@ -5,7 +5,7 @@
  * Creates 20 test users for load testing
  */
 
-const { createClient } = require('@supabase/supabase-js');
+import { createClient } from '@supabase/supabase-js';
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://puxdqxwgwmxwuhuvahdd.supabase.co',
@@ -68,7 +68,7 @@ async function createTestUsers() {
   console.log(`Failed: ${failed}`);
 
   // Save results
-  const fs = require('fs');
+  import fs from 'fs';
   const resultsPath = '/opt/adam-careers/tests/test-data/users.json';
   fs.writeFileSync(resultsPath, JSON.stringify({
     timestamp: new Date().toISOString(),
