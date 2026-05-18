@@ -38,7 +38,6 @@ OPENROUTER_API_KEY=your-openrouter-key
 OPENROUTER_MODEL=x-ai/grok-3-mini
 
 # Composio (LinkedIn import)
-)
 COMPOSIO_API_KEY=ck_HtRPppY7nVK3sgt8qCjx
 
 # App
